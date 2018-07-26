@@ -1,0 +1,135 @@
+<html>
+  <head>
+    <style>
+      .row {
+        display: flex;
+        justify-content: center;
+      }
+
+      .cell {
+        width: 50px;
+        height: 50px;
+        border: 1px solid black;
+        display: inline-block;
+      }
+    </style>
+  </head>
+  <body>
+    <div>
+      <div>
+        <div>Current player:</div>
+        <input type="radio" name="current-player" id="p1" checked onclick="javascript:selectPlayer(1);"/>
+        <label for="p1">Player 1</label>
+        <input type="radio" name="current-player" id="p2" onclick="javascript:selectPlayer(2);"/>
+        <label for="p2">Player 2</label>
+        <input type="radio" name="current-player" id="p3" onclick="javascript:selectPlayer(3);"/>
+        <label for="p3">Player 3</label>
+        <input type="radio" name="current-player" id="p4" onclick="javascript:selectPlayer(4);"/>
+        <label for="p4">Player 4</label>
+      </div>
+    </div>
+    <div class="board">
+      <div class="row">
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+      </div>
+      <div class="row">
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+      </div>
+      <div class="row">
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+      </div>
+      <div class="row">
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+      </div>
+      <div class="row">
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+      </div>
+      <div class="row">
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+      </div>
+      <div class="row">
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+        <span class="cell"></span>
+      </div>
+    </div>
+  </body>
+
+  <script>
+    function newBoard() {
+      var board = new Array(7);
+
+      board[0] = new Array(4).fill("");
+      board[1] = new Array(5).fill("");
+      board[2] = new Array(6).fill("");
+      board[3] = new Array(7).fill("");
+      board[4] = new Array(6).fill("");
+      board[5] = new Array(5).fill("");
+      board[6] = new Array(4).fill("");
+
+      return board;
+    }
+
+    function drawUIBoard() {
+      var rowsElem = document.getElementsByClassName("row");
+
+      for (var i=0; i<rowsElem.length; i++) {
+        var cellsElem = rowsElem[i].getElementsByClassName("cell");
+
+        for (var j=0; j<cellsElem.length; j++) {
+          cellsElem[j].innerHTML = uiboard[i][j];
+        }
+      }
+    }
+
+    function selectPlayer(player) {
+      currentPlayer = player;
+    }
+
+    function toggleCell(r, c) {
+      
+    }
+
+    var currentPlayer = 1;
+
+    var uiboard = newBoard();
+    uiboard[1][2] = 'iii';
+
+    var dboard = new Array(6);
+    for (var i=0; i<dboard.length; i++) {
+      dboard[i] = newBoard();
+    }
+
+    var cellValues = ["", "i", "ii", "iii"];
+
+    drawUIBoard();
+  </script>
+</html>
