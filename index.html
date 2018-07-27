@@ -8,7 +8,7 @@
       }
 
       .player-1 {
-        background-color: blue;
+        background-color: lightskyblue;
       }
 
       .player-2 {
@@ -16,7 +16,7 @@
       }
 
       .player-3 {
-        background-color: green;
+        background-color: lightgreen;
       }
 
       .player-4 {
@@ -42,6 +42,7 @@
         width: 50px;
         height: 50px;
         border: 1px solid black;
+        border-radius: 25px;
         display: inline-block;
         cursor: pointer;
         display: flex;
@@ -208,7 +209,7 @@
         </td>
         <td colspan="2">
           <div class="light-points-table-wrapper">
-            <table class="light-points-table south-west">
+            <table class="light-points-table south-east">
               <tr><td class="player-1">1</td></tr>
               <tr><td class="player-2">1</td></tr>
               <tr><td class="player-3">1</td></tr>
@@ -239,23 +240,27 @@
     var SOUTHEAST = 4;
     var SOUTHWEST = 5;
 
-    var treeNames = ["", "i", "ii", "iii"];
+    var treeNames = ["", "s", "i", "ii", "iii"];
 
     function Cell() {
         this.neighbours = new Array(6).fill(null);
-        this.data = new CellData();
+        this.player = null;
+        this.tree = 0;
     }
 
-    function CellData() {
-      this.player = null;
-      this.tree = 0;
-    }
-
-    CellData.prototype.growTree = function() {
+    Cell.prototype.growTree = function() {
       this.tree = (this.tree + 1) % treeNames.length;
       if (this.tree === 0) {
         this.player = null;
       }
+    }
+
+    Cell.prototype.hasTree = function() {
+      return this.tree >= 2;
+    }
+
+    Cell.prototype.treeHeight = function() {
+      return this.tree - 1;
     }
 
     function newBoard() {
@@ -315,6 +320,17 @@
       }
     }
 
+    function generateBoardBySunDirection(board) {
+      var sunBoard = new Array(6);
+      sunBoard[WEST]      = [board[0][0], board[1][0], board[2][0], board[3][0], board[4][0], board[5][0], board[6][0]];
+      sunBoard[NORTHWEST] = [board[0][3], board[0][2], board[0][1], board[0][0], board[1][0], board[2][0], board[3][0]];
+      sunBoard[NORTHEAST] = [board[3][6], board[2][5], board[1][4], board[0][3], board[0][2], board[0][1], board[0][0]];
+      sunBoard[EAST]      = [board[6][3], board[5][4], board[4][5], board[3][6], board[2][5], board[1][4], board[0][3]];
+      sunBoard[SOUTHEAST] = [board[6][0], board[6][1], board[6][2], board[6][3], board[5][4], board[4][5], board[3][6]];
+      sunBoard[SOUTHWEST] = [board[3][0], board[4][0], board[5][0], board[6][0], board[6][1], board[6][2], board[6][3]];
+      return sunBoard;
+    }
+
     function updateBoard() {
       var rowsElem = document.getElementsByClassName("row");
 
@@ -322,14 +338,14 @@
         var cellsElem = rowsElem[i].getElementsByClassName("cell");
 
         for (var j=0; j<cellsElem.length; j++) {
-          cellsElem[j].innerHTML = treeNames[board[i][j].data.tree];
+          cellsElem[j].innerHTML = treeNames[board[i][j].tree];
 
           cellsElem[j].classList.remove("player-1");
           cellsElem[j].classList.remove("player-2");
           cellsElem[j].classList.remove("player-3");
           cellsElem[j].classList.remove("player-4");
 
-          switch (board[i][j].data.player) {
+          switch (board[i][j].player) {
             case 0:
               cellsElem[j].classList.add("player-1");
               break;
@@ -345,11 +361,82 @@
           }
         }
       }
+
+      updateLightPoints();
     }
 
     function updateLightPoints() {
-      var sunDirection = WEST;
-      var reverseSunDirection = (sunDirection + 3) % 6;
+      var points = calculateLightPoints();
+
+      for (var d=0; d<6; d++) {
+        var table = directionToLightPointsTable(d);
+        var cols = table.getElementsByTagName("td");
+
+        for (let p=0; p<4; p++) {
+          cols[p].innerHTML = points[d][p];
+        }
+      }
+    }
+
+    function calculateLightPoints() {
+      var points = new Array(6).fill().map(() => new Array(4).fill(0));
+
+      for (var sunDirection=0; sunDirection<6; sunDirection++) {
+        var reverseSunDirection = (sunDirection + 3) % 6;
+        var entry = sunBoard[reverseSunDirection];
+
+        for (let r=0; r<entry.length; r++) {
+          var cell = entry[r];
+          do {
+            if (cell.hasTree() && !isBlocked(cell, cell.neighbours[sunDirection], sunDirection, 1)) {
+              points[sunDirection][cell.player] += cell.treeHeight();
+            }
+          } while((cell = cell.neighbours[sunDirection]) !== null);
+        }
+      }
+
+      return points;
+    }
+
+    function directionToLightPointsTable(d) {
+      var querySelector = "light-points-table ";
+
+      switch (d) {
+        case WEST:
+          querySelector += "west";
+          break;
+        case NORTHWEST:
+          querySelector += "north-west";
+          break;
+        case NORTHEAST:
+          querySelector += "north-east";
+          break;
+        case EAST:
+          querySelector += "east";
+          break;
+        case SOUTHEAST:
+          querySelector += "south-east";
+          break;
+        case SOUTHWEST:
+          querySelector += "south-west";
+          break;
+      }
+
+      return document.getElementsByClassName(querySelector)[0];
+    }
+
+    function isBlocked(originCell, targetCell, direction, distance) {
+      if (distance > 3 || targetCell === null) {
+        return false;
+      }
+
+      if (targetCell.hasTree() &&
+          targetCell.treeHeight() >= distance && targetCell.treeHeight() >= originCell.treeHeight()) {
+          return true;
+      }
+      else {
+        return isBlocked(originCell, targetCell.neighbours[direction], direction, distance + 1);
+      }
     }
 
     function showSelectPlayerModal(isVisible) {
@@ -358,24 +445,26 @@
 
     function selectPlayer(player) {
       showSelectPlayerModal(false);
-      currCell.data.player = player;
-      currCell.data.growTree();
+      currCell.player = player;
+      currCell.growTree();
+      currCell.growTree();
       updateBoard();
     }
 
     function toggleCell(r, c) {
       currCell = board[r][c];
 
-      if (currCell.data.player === null) {
+      if (currCell.player === null) {
         showSelectPlayerModal(true);
       }
       else {
-        currCell.data.growTree();
+        currCell.growTree();
         updateBoard();
       }
     }
 
     var board = newBoard();
+    var sunBoard = generateBoardBySunDirection(board);
     var currCell = null;
 
     showSelectPlayerModal(false);
