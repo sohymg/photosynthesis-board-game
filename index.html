@@ -23,6 +23,14 @@
         background-color: yellow;
       }
 
+      .undo-btn {
+        position:absolute;
+        right: 0px;
+        top: 0px;
+        width: 200px;
+        height: 100px;
+      }
+
       .light-points-table-wrapper {
         display: flex;
         justify-content: center;
@@ -96,6 +104,7 @@
     </style>
   </head>
   <body>
+    <button class="undo-btn" onclick="javascript:undo();">UNDO</button>
     <table>
       <tr>
         <td colspan="2">
@@ -361,8 +370,6 @@
           }
         }
       }
-
-      updateLightPoints();
     }
 
     function updateLightPoints() {
@@ -445,10 +452,12 @@
 
     function selectPlayer(player) {
       showSelectPlayerModal(false);
+
+      recordMove();
       currCell.player = player;
       currCell.growTree();
       currCell.growTree();
-      updateBoard();
+      updateTick();
     }
 
     function toggleCell(r, c) {
@@ -458,16 +467,46 @@
         showSelectPlayerModal(true);
       }
       else {
+        recordMove();
         currCell.growTree();
-        updateBoard();
+        updateTick();
       }
+    }
+
+    function recordMove() {
+      var cell = currCell;
+      var oldPlayer = cell.player;
+      var oldTree = cell.tree;
+
+      moves.push(() => {
+        cell.player = oldPlayer;
+        cell.tree = oldTree;
+      });
+    }
+
+    function undo() {
+      if (moves.length > 0) {
+        moves.pop()();
+        updateTick();
+      }
+    }
+
+    function updateUndoBtn() {
+      document.getElementsByClassName("undo-btn")[0].disabled = moves.length === 0;
+    }
+
+    function updateTick() {
+      updateBoard();
+      updateLightPoints();
+      updateUndoBtn();
     }
 
     var board = newBoard();
     var sunBoard = generateBoardBySunDirection(board);
     var currCell = null;
+    var moves = [];
 
     showSelectPlayerModal(false);
-    updateBoard();
+    updateTick();
   </script>
 </html>
