@@ -1,6 +1,38 @@
 <html>
   <head>
     <style>
+      body {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .player-1 {
+        background-color: blue;
+      }
+
+      .player-2 {
+        background-color: orange;
+      }
+
+      .player-3 {
+        background-color: green;
+      }
+
+      .player-4 {
+        background-color: yellow;
+      }
+
+      .light-points-table-wrapper {
+        display: flex;
+        justify-content: center;
+      }
+
+      .light-points-table {
+        width: 100px;
+        text-align: center;
+      }
+
       .row {
         display: flex;
         justify-content: center;
@@ -11,125 +43,342 @@
         height: 50px;
         border: 1px solid black;
         display: inline-block;
+        cursor: pointer;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .select-player-modal {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+      }
+
+      .select-player-modal .modal-background {
+        background-color: grey;
+        opacity: 0.5;
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+      }
+
+      .select-player-modal .modal-content {
+        position: fixed;
+        left: 0px;
+        top: 0px;
+        width: 100%;
+        height: 100%;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      .select-player-modal .modal-body {
+        background-color: white;
+        display: flex;
+        padding: 50px;
+      }
+
+      .select-player-modal .select-player-btn {
+        width: 150px;
+        height: 30px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
       }
     </style>
   </head>
   <body>
-    <div>
-      <div>
-        <div>Current player:</div>
-        <input type="radio" name="current-player" id="p1" checked onclick="javascript:selectPlayer(1);"/>
-        <label for="p1">Player 1</label>
-        <input type="radio" name="current-player" id="p2" onclick="javascript:selectPlayer(2);"/>
-        <label for="p2">Player 2</label>
-        <input type="radio" name="current-player" id="p3" onclick="javascript:selectPlayer(3);"/>
-        <label for="p3">Player 3</label>
-        <input type="radio" name="current-player" id="p4" onclick="javascript:selectPlayer(4);"/>
-        <label for="p4">Player 4</label>
-      </div>
-    </div>
-    <div class="board">
-      <div class="row">
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-      </div>
-      <div class="row">
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-      </div>
-      <div class="row">
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-      </div>
-      <div class="row">
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-      </div>
-      <div class="row">
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-      </div>
-      <div class="row">
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-      </div>
-      <div class="row">
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
-        <span class="cell"></span>
+    <table>
+      <tr>
+        <td colspan="2">
+          <div class="light-points-table-wrapper">
+            <table class="light-points-table north-west">
+              <tr><td class="player-1">1</td></tr>
+              <tr><td class="player-2">1</td></tr>
+              <tr><td class="player-3">1</td></tr>
+              <tr><td class="player-4">1</td></tr>
+            </table>
+          <div>
+        </td>
+        <td colspan="2">
+          <div class="light-points-table-wrapper">
+            <table class="light-points-table north-east">
+              <tr><td class="player-1">1</td></tr>
+              <tr><td class="player-2">1</td></tr>
+              <tr><td class="player-3">1</td></tr>
+              <tr><td class="player-4">1</td></tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td>
+          <div class="light-points-table-wrapper">
+            <table class="light-points-table west">
+              <tr><td class="player-1">1</td></tr>
+              <tr><td class="player-2">1</td></tr>
+              <tr><td class="player-3">1</td></tr>
+              <tr><td class="player-4">1</td></tr>
+            </table>
+          </div>
+        </td>
+        <td colspan="2">
+          <div class="board">
+            <div class="row">
+              <span class="cell" onclick="javascript:toggleCell(0, 0);"></span>
+              <span class="cell" onclick="javascript:toggleCell(0, 1);"></span>
+              <span class="cell" onclick="javascript:toggleCell(0, 2);"></span>
+              <span class="cell" onclick="javascript:toggleCell(0, 3);"></span>
+            </div>
+            <div class="row">
+              <span class="cell" onclick="javascript:toggleCell(1, 0);"></span>
+              <span class="cell" onclick="javascript:toggleCell(1, 1);"></span>
+              <span class="cell" onclick="javascript:toggleCell(1, 2);"></span>
+              <span class="cell" onclick="javascript:toggleCell(1, 3);"></span>
+              <span class="cell" onclick="javascript:toggleCell(1, 4);"></span>
+            </div>
+            <div class="row">
+              <span class="cell" onclick="javascript:toggleCell(2, 0);"></span>
+              <span class="cell" onclick="javascript:toggleCell(2, 1);"></span>
+              <span class="cell" onclick="javascript:toggleCell(2, 2);"></span>
+              <span class="cell" onclick="javascript:toggleCell(2, 3);"></span>
+              <span class="cell" onclick="javascript:toggleCell(2, 4);"></span>
+              <span class="cell" onclick="javascript:toggleCell(2, 5);"></span>
+            </div>
+            <div class="row">
+              <span class="cell" onclick="javascript:toggleCell(3, 0);"></span>
+              <span class="cell" onclick="javascript:toggleCell(3, 1);"></span>
+              <span class="cell" onclick="javascript:toggleCell(3, 2);"></span>
+              <span class="cell" onclick="javascript:toggleCell(3, 3);"></span>
+              <span class="cell" onclick="javascript:toggleCell(3, 4);"></span>
+              <span class="cell" onclick="javascript:toggleCell(3, 5);"></span>
+              <span class="cell" onclick="javascript:toggleCell(3, 6);"></span>
+            </div>
+            <div class="row">
+              <span class="cell" onclick="javascript:toggleCell(4, 0);"></span>
+              <span class="cell" onclick="javascript:toggleCell(4, 1);"></span>
+              <span class="cell" onclick="javascript:toggleCell(4, 2);"></span>
+              <span class="cell" onclick="javascript:toggleCell(4, 3);"></span>
+              <span class="cell" onclick="javascript:toggleCell(4, 4);"></span>
+              <span class="cell" onclick="javascript:toggleCell(4, 5);"></span>
+            </div>
+            <div class="row">
+              <span class="cell" onclick="javascript:toggleCell(5, 0);"></span>
+              <span class="cell" onclick="javascript:toggleCell(5, 1);"></span>
+              <span class="cell" onclick="javascript:toggleCell(5, 2);"></span>
+              <span class="cell" onclick="javascript:toggleCell(5, 3);"></span>
+              <span class="cell" onclick="javascript:toggleCell(5, 4);"></span>
+            </div>
+            <div class="row">
+              <span class="cell" onclick="javascript:toggleCell(6, 0);"></span>
+              <span class="cell" onclick="javascript:toggleCell(6, 1);"></span>
+              <span class="cell" onclick="javascript:toggleCell(6, 2);"></span>
+              <span class="cell" onclick="javascript:toggleCell(6, 3);"></span>
+            </div>
+          </div>
+        </td>
+        <td>
+          <div class="light-points-table-wrapper">
+            <table class="light-points-table east">
+              <tr><td class="player-1">1</td></tr>
+              <tr><td class="player-2">1</td></tr>
+              <tr><td class="player-3">1</td></tr>
+              <tr><td class="player-4">1</td></tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+      <tr>
+        <td colspan="2">
+          <div class="light-points-table-wrapper">
+            <table class="light-points-table south-west">
+              <tr><td class="player-1">1</td></tr>
+              <tr><td class="player-2">1</td></tr>
+              <tr><td class="player-3">1</td></tr>
+              <tr><td class="player-4">1</td></tr>
+            </table>
+          </div>
+        </td>
+        <td colspan="2">
+          <div class="light-points-table-wrapper">
+            <table class="light-points-table south-west">
+              <tr><td class="player-1">1</td></tr>
+              <tr><td class="player-2">1</td></tr>
+              <tr><td class="player-3">1</td></tr>
+              <tr><td class="player-4">1</td></tr>
+            </table>
+          </div>
+        </td>
+      </tr>
+    </table>
+    <div class="select-player-modal">
+      <div class="modal-background"></div>
+      <div class="modal-content">
+        <div class="modal-body">
+          <div class="select-player-btn player-1" onclick="javascript:selectPlayer(0);">Player 1</div>
+          <div class="select-player-btn player-2" onclick="javascript:selectPlayer(1);">Player 2</div>
+          <div class="select-player-btn player-3" onclick="javascript:selectPlayer(2);">Player 3</div>
+          <div class="select-player-btn player-4" onclick="javascript:selectPlayer(3);">Player 4</div>
+        </div>
       </div>
     </div>
   </body>
 
   <script>
+    var WEST      = 0;
+    var NORTHWEST = 1;
+    var NORTHEAST = 2;
+    var EAST      = 3;
+    var SOUTHEAST = 4;
+    var SOUTHWEST = 5;
+
+    var treeNames = ["", "i", "ii", "iii"];
+
+    function Cell() {
+        this.neighbours = new Array(6).fill(null);
+        this.data = new CellData();
+    }
+
+    function CellData() {
+      this.player = null;
+      this.tree = 0;
+    }
+
+    CellData.prototype.growTree = function() {
+      this.tree = (this.tree + 1) % treeNames.length;
+      if (this.tree === 0) {
+        this.player = null;
+      }
+    }
+
     function newBoard() {
       var board = new Array(7);
 
-      board[0] = new Array(4).fill("");
-      board[1] = new Array(5).fill("");
-      board[2] = new Array(6).fill("");
-      board[3] = new Array(7).fill("");
-      board[4] = new Array(6).fill("");
-      board[5] = new Array(5).fill("");
-      board[6] = new Array(4).fill("");
+      board[0] = new Array(4).fill().map(() => new Cell());
+      board[1] = new Array(5).fill().map(() => new Cell());
+      board[2] = new Array(6).fill().map(() => new Cell());
+      board[3] = new Array(7).fill().map(() => new Cell());
+      board[4] = new Array(6).fill().map(() => new Cell());
+      board[5] = new Array(5).fill().map(() => new Cell());
+      board[6] = new Array(4).fill().map(() => new Cell());
+
+      for (var r=0; r<board.length; r++) {
+        for (var c=0; c<board[r].length; c++) {
+          linkUpNeighbours(board, r, c);
+        }
+      }
 
       return board;
     }
 
-    function drawUIBoard() {
+    function linkUpNeighbours(board, r, c) {
+      var currCell = board[r][c];
+      var currRow = board[r];
+      var prevRow = r - 1 >= 0 ? board[r-1] : null;
+      var nextRow = r + 1 < board.length ? board[r+1]: null;
+
+      if (c - 1 >= 0) {
+        currCell.neighbours[WEST] = currRow[c-1];
+      }
+
+      if (c + 1 < currRow.length) {
+        currCell.neighbours[EAST] = currRow[c+1];
+      }
+
+      if (prevRow !== null) {
+        if (prevRow.length < currRow.length) {
+          currCell.neighbours[NORTHWEST] = c - 1 >= 0 ? prevRow[c-1] : null;
+          currCell.neighbours[NORTHEAST] = c < prevRow.length ? prevRow[c] : null;
+        }
+        else {
+          currCell.neighbours[NORTHWEST] = prevRow[c];
+          currCell.neighbours[NORTHEAST] = prevRow[c+1];
+        }
+      }
+
+      if (nextRow !== null) {
+        if (nextRow.length > currRow.length) {
+          currCell.neighbours[SOUTHWEST] = nextRow[c];
+          currCell.neighbours[SOUTHEAST] = nextRow[c+1];
+        }
+        else {
+          currCell.neighbours[SOUTHWEST] = c - 1 >= 0 ? nextRow[c-1] : null;
+          currCell.neighbours[SOUTHEAST] = c < nextRow.length ? nextRow[c] : null;
+        }
+      }
+    }
+
+    function updateBoard() {
       var rowsElem = document.getElementsByClassName("row");
 
       for (var i=0; i<rowsElem.length; i++) {
         var cellsElem = rowsElem[i].getElementsByClassName("cell");
 
         for (var j=0; j<cellsElem.length; j++) {
-          cellsElem[j].innerHTML = uiboard[i][j];
+          cellsElem[j].innerHTML = treeNames[board[i][j].data.tree];
+
+          cellsElem[j].classList.remove("player-1");
+          cellsElem[j].classList.remove("player-2");
+          cellsElem[j].classList.remove("player-3");
+          cellsElem[j].classList.remove("player-4");
+
+          switch (board[i][j].data.player) {
+            case 0:
+              cellsElem[j].classList.add("player-1");
+              break;
+            case 1:
+              cellsElem[j].classList.add("player-2");
+              break;
+            case 2:
+              cellsElem[j].classList.add("player-3");
+              break;
+            case 3:
+              cellsElem[j].classList.add("player-4");
+              break;
+          }
         }
       }
     }
 
+    function updateLightPoints() {
+      var sunDirection = WEST;
+      var reverseSunDirection = (sunDirection + 3) % 6;
+    }
+
+    function showSelectPlayerModal(isVisible) {
+      document.getElementsByClassName("select-player-modal")[0].style.display = isVisible ? "block" : "none";
+    }
+
     function selectPlayer(player) {
-      currentPlayer = player;
+      showSelectPlayerModal(false);
+      currCell.data.player = player;
+      currCell.data.growTree();
+      updateBoard();
     }
 
     function toggleCell(r, c) {
-      
+      currCell = board[r][c];
+
+      if (currCell.data.player === null) {
+        showSelectPlayerModal(true);
+      }
+      else {
+        currCell.data.growTree();
+        updateBoard();
+      }
     }
 
-    var currentPlayer = 1;
+    var board = newBoard();
+    var currCell = null;
 
-    var uiboard = newBoard();
-    uiboard[1][2] = 'iii';
-
-    var dboard = new Array(6);
-    for (var i=0; i<dboard.length; i++) {
-      dboard[i] = newBoard();
-    }
-
-    var cellValues = ["", "i", "ii", "iii"];
-
-    drawUIBoard();
+    showSelectPlayerModal(false);
+    updateBoard();
   </script>
 </html>
