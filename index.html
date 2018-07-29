@@ -125,6 +125,7 @@
       }
 
       .select-player-modal .modal-body {
+        position: relative;
         background-color: white;
         display: flex;
         padding: 20px;
@@ -138,6 +139,15 @@
         align-items: center;
         cursor: pointer;
         margin: 10px;
+      }
+
+      #close {
+        position: absolute;
+        right: 5px;
+        top: 0px;
+        font-size: 30px;
+        font-weight: bold;
+        text-align: right;
       }
     </style>
   </head>
@@ -271,6 +281,7 @@
       <div class="modal-background"></div>
       <div class="modal-content">
         <div class="modal-body">
+          <span id='close' onclick='showSelectPlayerModal(false);'>X</span>
           <table>
             <tr>
               <td><div class="select-player-btn player-1" onclick="javascript:selectPlayer(0);">Player 1</div></td>
@@ -281,8 +292,6 @@
               <td><div class="select-player-btn player-4" onclick="javascript:selectPlayer(3);">Player 4</div></td>
             </tr>
           </table>
-
-
         </div>
       </div>
     </div>
