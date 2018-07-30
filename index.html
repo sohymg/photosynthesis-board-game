@@ -1,5 +1,12 @@
 <html>
   <head>
+    <link rel="apple-touch-icon" sizes="180x180" href="/photosynthesis-board-game/apple-touch-icon.png">
+    <link rel="icon" type="image/png" sizes="32x32" href="/photosynthesis-board-game/favicon-32x32.png">
+    <link rel="icon" type="image/png" sizes="16x16" href="/photosynthesis-board-game/favicon-16x16.png">
+    <link rel="manifest" href="/photosynthesis-board-game/manifest.json">
+    <meta name="msapplication-TileColor" content="#da532c">
+    <meta name="theme-color" content="#ffffff">
+    <title>Photosynthesis Tracker</title>
     <style>
       body {
         display: flex;
@@ -579,5 +586,9 @@
 
     showSelectPlayerModal(false);
     updateTick();
+    if('serviceWorker' in navigator) {
+      navigator.serviceWorker
+               .register('/photosynthesis-board-game/sw.js');
+    }
   </script>
 </html>
