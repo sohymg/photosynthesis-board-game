@@ -321,11 +321,27 @@
     var SOUTHWEST = 5;
 
     var treeNames = ["", "s", "i", "ii", "iii"];
+    var scoringTokens = [
+                          [new ScoringToken(1, 12), new ScoringToken(1, 12), new ScoringToken(1, 12),
+                           new ScoringToken(1, 12), new ScoringToken(1, 13), new ScoringToken(1, 13),
+                           new ScoringToken(1, 13), new ScoringToken(1, 14), new ScoringToken(1, 14)],
+                          [new ScoringToken(2, 13), new ScoringToken(2, 13), new ScoringToken(2, 14),
+                           new ScoringToken(2, 14), new ScoringToken(2, 16), new ScoringToken(2, 16),
+                           new ScoringToken(2, 17)],
+                          [new ScoringToken(3, 17), new ScoringToken(3, 17), new ScoringToken(3, 18),
+                           new ScoringToken(3, 18), new ScoringToken(3, 19)],
+                          [new ScoringToken(4, 20), new ScoringToken(4, 21), new ScoringToken(4, 22)]
+                        ];
 
     function Cell() {
         this.neighbours = new Array(6).fill(null);
         this.player = null;
         this.tree = 0;
+    }
+
+    function ScoringToken(ringNumber, score) {
+      this.ringNumber = ringNumber;
+      this.score = score;
     }
 
     Cell.prototype.growTree = function() {
@@ -345,6 +361,15 @@
 
     function newBoard() {
       var board = new Array(7);
+       var ringNumbers = [
+                           [1, 1, 1, 1],
+                           [1, 2, 2, 2, 1],
+                           [1, 2, 3, 3, 2, 1],
+                           [1, 2, 3, 4, 3, 2, 1],
+                           [1, 2, 3, 3, 2, 1],
+                           [1, 2, 2, 2, 1],
+                           [1, 1, 1, 1]
+                         ];
 
       board[0] = new Array(4).fill().map(() => new Cell());
       board[1] = new Array(5).fill().map(() => new Cell());
@@ -357,6 +382,7 @@
       for (var r=0; r<board.length; r++) {
         for (var c=0; c<board[r].length; c++) {
           linkUpNeighbours(board, r, c);
+          board[r][c].ringNumber = ringNumbers[r][c];
         }
       }
 
@@ -398,6 +424,14 @@
           currCell.neighbours[SOUTHEAST] = c < nextRow.length ? nextRow[c] : null;
         }
       }
+    }
+
+    function getScoringToken(ringNumber) {
+      // If the scoring tokens for a ring have run out, collect from the next outer ring.
+      while (scoringTokens[ringNumber-1].length == 0) {
+        ringNumber--;
+      }
+      return scoringTokens[ringNumber-1].pop();
     }
 
     function generateBoardBySunDirection(board) {
@@ -524,7 +558,7 @@
     function selectPlayer(player) {
       showSelectPlayerModal(false);
 
-      recordMove();
+      recordMove(null);
       currCell.player = player;
       currCell.growTree();
       currCell.growTree();
@@ -538,20 +572,33 @@
         showSelectPlayerModal(true);
       }
       else {
-        recordMove();
+        // Tree will be harvested if it's number 4
+        var scoringToken = currCell.tree == 4 ? getScoringToken(currCell.ringNumber) : null;
+        // Move must be recorded before the score is updated or undo will not work correctly.
+        recordMove(scoringToken);
+        if (scoringToken !== null) {
+          playerScores[currCell.player] += scoringToken.score;
+        }
         currCell.growTree();
         updateTick();
       }
     }
 
-    function recordMove() {
+    // Takes a scoring token when the move will harvest a tree so the token can be replaced
+    // if the move is undone.
+    function recordMove(scoringToken) {
       var cell = currCell;
       var oldPlayer = cell.player;
       var oldTree = cell.tree;
+      var oldScore = playerScores[oldPlayer];
 
       moves.push(() => {
         cell.player = oldPlayer;
         cell.tree = oldTree;
+        if (scoringToken !== null) {
+          playerScores[oldPlayer] = oldScore;
+          scoringTokens[scoringToken.ringNumber-1].push(scoringToken);
+        }
       });
     }
 
@@ -583,6 +630,7 @@
     var currCell = null;
     var moves = [];
     var sunPosition = NORTHEAST;
+    var playerScores = [0, 0, 0, 0];
 
     showSelectPlayerModal(false);
     updateTick();
