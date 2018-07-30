@@ -11,22 +11,24 @@
 
       table {
         font-size: 20px;
+        color: white;
+        text-shadow: 1px 1px 1px black;
       }
 
       .player-1 {
-        background-color: lightskyblue;
+        background-image: url('pine.jpg');
       }
 
       .player-2 {
-        background-color: orange;
+        background-image: url('linden.jpg');
       }
 
       .player-3 {
-        background-color: lightgreen;
+        background-image: url('maple.jpg');
       }
 
       .player-4 {
-        background-color: yellow;
+        background-image: url('oak.jpg');
       }
 
       .undo-btn {
@@ -72,6 +74,10 @@
         border: 5px solid transparent;
       }
 
+      .light-points-table-cell {
+        background-position: top right;
+      }
+
       .active-sun {
         border: 5px solid red;
         border-radius: 10px;
@@ -93,6 +99,7 @@
         justify-content: center;
         align-items: center;
         font-size: 25px;
+        background-position: 50% 25%;
       }
 
       .select-player-modal {
@@ -132,13 +139,14 @@
       }
 
       .select-player-modal .select-player-btn {
-        width: 150px;
-        height: 100px;
+        width: 146px;
+        height: 105px;
         display: flex;
         justify-content: center;
         align-items: center;
         cursor: pointer;
         margin: 10px;
+        background-size: cover;
       }
 
       #close {
@@ -159,20 +167,20 @@
         <td colspan="2">
           <div class="light-points-table-wrapper">
             <table class="light-points-table north-west">
-              <tr><td class="player-1">1</td></tr>
-              <tr><td class="player-2">1</td></tr>
-              <tr><td class="player-3">1</td></tr>
-              <tr><td class="player-4">1</td></tr>
+              <tr><td class="light-points-table-cell player-1">1</td></tr>
+              <tr><td class="light-points-table-cell player-2">1</td></tr>
+              <tr><td class="light-points-table-cell player-3">1</td></tr>
+              <tr><td class="light-points-table-cell player-4">1</td></tr>
             </table>
           <div>
         </td>
         <td colspan="2">
           <div class="light-points-table-wrapper">
             <table class="light-points-table north-east active-sun">
-              <tr><td class="player-1">1</td></tr>
-              <tr><td class="player-2">1</td></tr>
-              <tr><td class="player-3">1</td></tr>
-              <tr><td class="player-4">1</td></tr>
+              <tr><td class="light-points-table-cell player-1">1</td></tr>
+              <tr><td class="light-points-table-cell player-2">1</td></tr>
+              <tr><td class="light-points-table-cell player-3">1</td></tr>
+              <tr><td class="light-points-table-cell player-4">1</td></tr>
             </table>
           </div>
         </td>
@@ -181,10 +189,10 @@
         <td>
           <div class="light-points-table-wrapper">
             <table class="light-points-table west">
-              <tr><td class="player-1">1</td></tr>
-              <tr><td class="player-2">1</td></tr>
-              <tr><td class="player-3">1</td></tr>
-              <tr><td class="player-4">1</td></tr>
+              <tr><td class="light-points-table-cell player-1">1</td></tr>
+              <tr><td class="light-points-table-cell player-2">1</td></tr>
+              <tr><td class="light-points-table-cell player-3">1</td></tr>
+              <tr><td class="light-points-table-cell player-4">1</td></tr>
             </table>
           </div>
         </td>
@@ -246,10 +254,10 @@
         <td>
           <div class="light-points-table-wrapper">
             <table class="light-points-table east">
-              <tr><td class="player-1">1</td></tr>
-              <tr><td class="player-2">1</td></tr>
-              <tr><td class="player-3">1</td></tr>
-              <tr><td class="player-4">1</td></tr>
+              <tr><td class="light-points-table-cell player-1">1</td></tr>
+              <tr><td class="light-points-table-cell player-2">1</td></tr>
+              <tr><td class="light-points-table-cell player-3">1</td></tr>
+              <tr><td class="light-points-table-cell player-4">1</td></tr>
             </table>
           </div>
         </td>
@@ -258,20 +266,20 @@
         <td colspan="2">
           <div class="light-points-table-wrapper">
             <table class="light-points-table south-west">
-              <tr><td class="player-1">1</td></tr>
-              <tr><td class="player-2">1</td></tr>
-              <tr><td class="player-3">1</td></tr>
-              <tr><td class="player-4">1</td></tr>
+              <tr><td class="light-points-table-cell player-1">1</td></tr>
+              <tr><td class="light-points-table-cell player-2">1</td></tr>
+              <tr><td class="light-points-table-cell player-3">1</td></tr>
+              <tr><td class="light-points-table-cell player-4">1</td></tr>
             </table>
           </div>
         </td>
         <td colspan="2">
           <div class="light-points-table-wrapper">
             <table class="light-points-table south-east">
-              <tr><td class="player-1">1</td></tr>
-              <tr><td class="player-2">1</td></tr>
-              <tr><td class="player-3">1</td></tr>
-              <tr><td class="player-4">1</td></tr>
+              <tr><td class="light-points-table-cell player-1">1</td></tr>
+              <tr><td class="light-points-table-cell player-2">1</td></tr>
+              <tr><td class="light-points-table-cell player-3">1</td></tr>
+              <tr><td class="light-points-table-cell player-4">1</td></tr>
             </table>
           </div>
         </td>
@@ -284,12 +292,12 @@
           <span id='close' onclick='showSelectPlayerModal(false);'>X</span>
           <table>
             <tr>
-              <td><div class="select-player-btn player-1" onclick="javascript:selectPlayer(0);">Player 1</div></td>
-              <td><div class="select-player-btn player-2" onclick="javascript:selectPlayer(1);">Player 2</div></td>
+              <td><div class="select-player-btn player-1" onclick="javascript:selectPlayer(0);">Pine</div></td>
+              <td><div class="select-player-btn player-2" onclick="javascript:selectPlayer(1);">Linden</div></td>
             </tr>
             <tr>
-              <td><div class="select-player-btn player-3" onclick="javascript:selectPlayer(2);">Player 3</div></td>
-              <td><div class="select-player-btn player-4" onclick="javascript:selectPlayer(3);">Player 4</div></td>
+              <td><div class="select-player-btn player-3" onclick="javascript:selectPlayer(2);">Maple</div></td>
+              <td><div class="select-player-btn player-4" onclick="javascript:selectPlayer(3);">Oak</div></td>
             </tr>
           </table>
         </div>
