@@ -70,6 +70,21 @@
         box-shadow: 5px 5px 2px grey;
       }
 
+      .reset-btn {
+        position:absolute;
+        left: 0px;
+        top: 0px;
+        width: 200px;
+        height: 100px;
+        font-size: 30px;
+        border: 1px solid transparent;
+        border-color: #dc3545;
+        color: #dc3545;
+        background-color: transparent;
+        cursor: pointer;
+        border-radius: 0.25rem;
+      }
+
       .light-points-table-wrapper {
         display: flex;
         justify-content: center;
@@ -188,6 +203,7 @@
   <body>
     <button class="undo-btn" onclick="javascript:undo();">UNDO</button>
     <button class="move-sun-btn" onclick="javascript:updateSunPosition();">Move Sun</button>
+    <button class="reset-btn" onclick="javascript:resetBoard();">Reset </button>
     <table>
       <tr>
         <td colspan="2">
@@ -354,17 +370,7 @@
     var SOUTHWEST = 5;
 
     var treeNames = ["", "s", "i", "ii", "iii"];
-    var scoringTokens = [
-                          [new ScoringToken(1, 12), new ScoringToken(1, 12), new ScoringToken(1, 12),
-                           new ScoringToken(1, 12), new ScoringToken(1, 13), new ScoringToken(1, 13),
-                           new ScoringToken(1, 13), new ScoringToken(1, 14), new ScoringToken(1, 14)],
-                          [new ScoringToken(2, 13), new ScoringToken(2, 13), new ScoringToken(2, 14),
-                           new ScoringToken(2, 14), new ScoringToken(2, 16), new ScoringToken(2, 16),
-                           new ScoringToken(2, 17)],
-                          [new ScoringToken(3, 17), new ScoringToken(3, 17), new ScoringToken(3, 18),
-                           new ScoringToken(3, 18), new ScoringToken(3, 19)],
-                          [new ScoringToken(4, 20), new ScoringToken(4, 21), new ScoringToken(4, 22)]
-                        ];
+    var scoringTokens = initScoringTokens();
 
     function Cell() {
         this.neighbours = new Array(6).fill(null);
@@ -465,6 +471,20 @@
         ringNumber--;
       }
       return scoringTokens[ringNumber-1].pop();
+    }
+
+    function initScoringTokens() {
+      return [
+               [new ScoringToken(1, 12), new ScoringToken(1, 12), new ScoringToken(1, 12),
+                new ScoringToken(1, 12), new ScoringToken(1, 13), new ScoringToken(1, 13),
+                new ScoringToken(1, 13), new ScoringToken(1, 14), new ScoringToken(1, 14)],
+               [new ScoringToken(2, 13), new ScoringToken(2, 13), new ScoringToken(2, 14),
+                new ScoringToken(2, 14), new ScoringToken(2, 16), new ScoringToken(2, 16),
+                new ScoringToken(2, 17)],
+               [new ScoringToken(3, 17), new ScoringToken(3, 17), new ScoringToken(3, 18),
+                new ScoringToken(3, 18), new ScoringToken(3, 19)],
+               [new ScoringToken(4, 20), new ScoringToken(4, 21), new ScoringToken(4, 22)]
+             ];
     }
 
     function generateBoardBySunDirection(board) {
@@ -666,6 +686,19 @@
       directionToLightPointsTable(sunPosition).classList.remove('active-sun');
       sunPosition = (sunPosition + 1) % 6;
       directionToLightPointsTable(sunPosition).classList.add('active-sun');
+    }
+
+    function resetBoard() {
+      if (confirm("Reset the board?")) {
+        board = newBoard();
+        sunBoard = generateBoardBySunDirection(board);
+        currCell = null;
+        moves = [];
+        sunPosition = NORTHEAST;
+        playerScores = [0, 0, 0, 0];
+        scoringTokens = initScoringTokens();
+        updateTick();
+      }
     }
 
     var board = newBoard();
