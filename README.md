@@ -4,7 +4,7 @@ Calculates light points and scoring for the [Photosynthesis board game](https://
 
 ## Usage
 
-Visit https://fonglh.github.io/photosynthesis-board-game/
+Visit https://sohymg.github.io/photosynthesis-board-game/
 
 ### Adding a Tree
 
